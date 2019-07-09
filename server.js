@@ -1,7 +1,8 @@
+const sc = require("./stockchanges.js");
+//import stockChanges from './stockchanges';
 const express = require("express");
 //import axios from 'axios';
 const cors = require('cors');
-
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -21,13 +22,6 @@ app.use((req, res, next) => {
             "Cache-control": "no-cache",
             "Access-Control-Allow-Origin": "*"
         });
-
-        generateIndex = (base) => {
-            let change = Math.floor(Math.random() * 10);
-            let positiveotnegative = Math.random() < 0.5 ? -1 : 1;
-            let indexchange = Math.floor(base * (change/10000)) * positiveotnegative;
-            return indexchange;
-        }
         
         let nasdaq = 8100;
         let snp = 3000;
@@ -43,16 +37,17 @@ app.use((req, res, next) => {
         res.write("\n\n");
 
         setInterval(() => {
+            console.log("hey");
             //stuff happens to indices
-            let nasdaqchange = generateIndex(8100);
+            let nasdaqchange = sc.generateIndex(8100);
             nasdaq += nasdaqchange;
-            let snpchange = generateIndex(3000);
+            let snpchange = sc.generateIndex(3000);
             snp += snpchange;
-            let nysechange  = generateIndex(13150);
+            let nysechange  = sc.generateIndex(13150);
             nyse  += nysechange;
-            let nasdaq100change = generateIndex(7800);
+            let nasdaq100change = sc.generateIndex(7800);
             nasdaq100 += nasdaq100change;
-            let dowchange = generateIndex(26800);
+            let dowchange = sc.generateIndex(26800);
             dow += dowchange;
 
             res.write('data: [{"id": "1", "aggregate": "Nasdaq Composite", "index": "'+nasdaq+'", "change": "'+nasdaqchange+'"}, \
